@@ -1,0 +1,9 @@
+Clase Temperatura:
+Tiene dos atributos: dia y temperatura.
+El constructor inicializa estos valores al crear un nuevo objeto.
+Clase Semana:
+Tiene una lista llamada temperaturas para almacenar objetos Temperatura.
+Para diseñar una solución a este paradigma de  (POO) que determine el promedio semanal del clima, podemos decir que se definen solo en dos clases
+
+Clase Temperatura: Esta clase representará las temperaturas diarias.
+Clase Semana: Esta clase será responsable de almacenar y calcular el promedio de las temperaturas durante una semana.
