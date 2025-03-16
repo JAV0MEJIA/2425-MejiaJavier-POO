@@ -1,0 +1,62 @@
+# Creación de una Aplicación GUI Básica
+# javier mejia
+
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+
+def agregar_datos():
+    nombre = entrada_nombre.get()
+    apellido = entrada_apellido.get()
+    edad = entrada_edad.get()
+    if nombre and apellido and edad.isdigit():
+        tabla_datos.insert('', 'end', values=(nombre, apellido, edad))
+        entrada_nombre.delete(0, tk.END)
+        entrada_apellido.delete(0, tk.END)
+        entrada_edad.delete(0, tk.END)
+    else:
+        messagebox.showwarning("INGRESE DATOS VALIDOS", "Por favor, ingrese datos válidos")
+
+def limpiar_tabla():
+    for item in tabla_datos.get_children():
+        tabla_datos.delete(item)
+
+ventana = tk.Tk()
+ventana.title("SISTEMA DE REGISTRO")
+ventana.geometry("700x700")
+ventana.config(bd="misty rose")
+
+style = ttk.Style()
+style.configure("Treeview", rowheight=25)
+
+label_nombre = tk.Label(ventana, text="INGRESE SU NOMBRE")
+label_nombre.pack(pady=5)
+entrada_nombre = tk.Entry(ventana, width=30)
+entrada_nombre.pack()
+
+label_apellido = tk.Label(ventana, text="INGRESE SU APELLIDO")
+label_apellido.pack(pady=5)
+entrada_apellido = tk.Entry(ventana, width=30)
+entrada_apellido.pack()
+
+label_edad = tk.Label(ventana, text="INGRESE SU EDAD")
+label_edad.pack(pady=5)
+entrada_edad = tk.Entry(ventana, width=30)
+entrada_edad.pack()
+
+boton_agregar = tk.Button(ventana, text="Agregar", bg="blue", command=agregar_datos)
+boton_agregar.pack(pady=10)
+
+tabla_datos = ttk.Treeview(ventana, columns=("NOMBRE", "APELLIDO", "EDAD"), show="headings")
+tabla_datos.heading("NOMBRE", text="NOMBRE")
+tabla_datos.heading("APELLIDO", text="APELLIDO")
+tabla_datos.heading("EDAD", text="EDAD")
+tabla_datos.column("NOMBRE", anchor="center", width=100)
+tabla_datos.column("APELLIDO", anchor="center", width=100)
+tabla_datos.column("EDAD", anchor="center", width=100)
+tabla_datos.pack()
+
+boton_limpiar = tk.Button(ventana, text="Limpiar", bg="blue", command=limpiar_tabla)
+boton_limpiar.pack(pady=10)
+
+ventana.mainloop()
