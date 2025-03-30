@@ -1,0 +1,62 @@
+#Lista de Tareas
+#javier mejia
+import tkinter as tk
+from tkinter import messagebox
+
+class Aplicacion(tk.Tk):
+    def _init_(self):
+        super()._init_()
+        self.title("Gestor de Tareas")
+        self.geometry("400x300")
+        self.tareas = []
+        self.crear_widgets()
+
+    def crear_widgets(self):
+        # Campo de entrada para nuevas tareas
+        self.entry_tarea = tk.Entry(self, width=40)
+        self.entry_tarea.pack(padx=10, pady=10)
+
+        # Botón para añadir tarea
+        self.button_anadir = tk.Button(self, text="Añadir Tarea", command=self.anadir_tarea)
+        self.button_anadir.pack(padx=10, pady=5)
+
+        # Lista de tareas
+        self.listbox_tareas = tk.Listbox(self, width=40)
+        self.listbox_tareas.pack(padx=10, pady=10)
+
+        # Botón para marcar tarea como completada
+        self.button_completar = tk.Button(self, text="Marcar como Completada", command=self.completar_tarea)
+        self.button_completar.pack(padx=10, pady=5)
+
+        # Botón para eliminar tarea
+        self.button_eliminar = tk.Button(self, text="Eliminar Tarea", command=self.eliminar_tarea)
+        self.button_eliminar.pack(padx=10, pady=5)
+
+    def anadir_tarea(self):
+        tarea = self.entry_tarea.get().strip()  # Eliminar espacios en blanco al inicio y al final
+        if tarea:
+            self.tareas.append(tarea)
+            self.listbox_tareas.insert(tk.END, tarea)
+            self.entry_tarea.delete(0, tk.END)
+        else:
+            messagebox.showwarning("Error", "Debes escribir una tarea")
+
+    def completar_tarea(self):
+        seleccionado = self.listbox_tareas.curselection()
+        if seleccionado:
+            tarea = self.listbox_tareas.get(seleccionado)
+            self.listbox_tareas.delete(seleccionado)
+            self.listbox_tareas.insert(tk.END, f"[Completada] {tarea}")
+        else:
+            messagebox.showwarning("Error", "Debes seleccionar una tarea")
+
+    def eliminar_tarea(self):
+        seleccionado = self.listbox_tareas.curselection()
+        if seleccionado:
+            self.listbox_tareas.delete(seleccionado)
+        else:
+            messagebox.showwarning("Error", "Debes seleccionar una tarea")
+
+if _name_ == "_main_":
+    app = Aplicacion()
+    app.mainloop()
