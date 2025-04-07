@@ -1,0 +1,85 @@
+# Gestión de Tareas con Atajos de Teclado
+# javier mejia
+import tkinter as tk
+from tkinter import messagebox
+
+class TodoApp:
+    def _init_(self, root):
+        self.root = root
+        self.root.title("Gestor de Tareas")
+        self.root.geometry("400x300")
+
+        # Lista de tareas
+        self.tasks = []
+
+        # Crear la interfaz
+        self.create_widgets()
+
+        # Configurar atajos de teclado
+        self.setup_keyboard_shortcuts()
+
+    def create_widgets(self):
+        # Campo de entrada para nuevas tareas
+        self.task_entry = tk.Entry(self.root, width=40)
+        self.task_entry.pack(pady=10)
+
+        # Botón para añadir tareas
+        self.add_button = tk.Button(self.root, text="Añadir Tarea", command=self.add_task)
+        self.add_button.pack(pady=5)
+
+        # Lista de tareas
+        self.task_listbox = tk.Listbox(self.root, width=50, height=10)
+        self.task_listbox.pack(pady=10)
+
+        # Botones para marcar como completada y eliminar
+        self.complete_button = tk.Button(self.root, text="Marcar como Completada", command=self.mark_completed)
+        self.complete_button.pack(pady=5)
+
+        self.delete_button = tk.Button(self.root, text="Eliminar Tarea", command=self.delete_task)
+        self.delete_button.pack(pady=5)
+
+    def setup_keyboard_shortcuts(self):
+        # Añadir tarea con Enter
+        self.root.bind('<Return>', lambda event: self.add_task())
+
+        # Marcar como completada con la tecla 'C'
+        self.root.bind('<c>', lambda event: self.mark_completed())
+
+        # Eliminar tarea con la tecla 'Delete' o 'D'
+        self.root.bind('<Delete>', lambda event: self.delete_task())
+        self.root.bind('<d>', lambda event: self.delete_task())
+
+        # Cerrar la aplicación con Escape
+        self.root.bind('<Escape>', lambda event: self.root.quit())
+
+    def add_task(self):
+        task = self.task_entry.get()
+        if task:
+            self.tasks.append({"task": task, "completed": False})
+            self.task_listbox.insert(tk.END, task)
+            self.task_entry.delete(0, tk.END)
+        else:
+            messagebox.showwarning("Advertencia", "Por favor, introduce una tarea.")
+
+    def mark_completed(self):
+        selected_task_index = self.task_listbox.curselection()
+        if selected_task_index:
+            index = selected_task_index[0]
+            self.tasks[index]["completed"] = True
+            self.task_listbox.itemconfig(index, {'bg': 'light green'})
+        else:
+            messagebox.showwarning("Advertencia", "Por favor, selecciona una tarea.")
+
+    def delete_task(self):
+        selected_task_index = self.task_listbox.curselection()
+        if selected_task_index:
+            index = selected_task_index[0]
+            self.task_listbox.delete(index)
+            del self.tasks[index]
+        else:
+            messagebox.showwarning("Advertencia", "Por favor, selecciona una tarea.")
+
+if _name_ == "_main_":
+    root = tk.Tk()
+    app = TodoApp(root)
+    root.mainloop()
